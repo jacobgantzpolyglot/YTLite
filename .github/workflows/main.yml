@@ -8,31 +8,31 @@ on:
         description: "Integrate YouPiP"
         type: boolean
         required: true
-        default: true
+        default: false
 
       enable_ytuhd:
         description: "Integrate YTUHD"
         type: boolean
         required: true
-        default: true
-
-      enable_ryd:
-        description: "Integrate Return YouTube Dislikes"
-        type: boolean
-        required: true
-        default: true
+        default: false
 
       enable_yq:
         description: "Integrate YouQuality"
         type: boolean
         required: true
-        default: true
+        default: false
+
+      enable_ryd:
+        description: "Integrate Return YouTube Dislikes"
+        type: boolean
+        required: true
+        default: false
 
       enable_demc:
         description: "Integrate DontEatMyContent"
         type: boolean
         required: true
-        default: true
+        default: false
 
       ipa_url:
         description: "URL to the decrypted IPA file"
@@ -42,7 +42,7 @@ on:
 
       tweak_version:
         description: "The version of the tweak to use. Enter the version manually from dayanch96/YTLite/releases or leave default"
-        default: "5.1"
+        default: "5.2b1"
         required: true
         type: string
 
@@ -211,7 +211,7 @@ jobs:
           git clone --quiet --depth=1 https://github.com/PoomSmart/YouQuality.git
 
       - name: Clone YTVideoOverlay
-        if: ${{ inputs.enable_yq }}
+        if: ${{ inputs.enable_yq || inputs.enable_youpip }}
         run: |
           cd ${{ github.workspace }}
           git clone --quiet --depth=1 https://github.com/PoomSmart/YTVideoOverlay.git
@@ -268,7 +268,7 @@ jobs:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Build YTVideoOverlay
-        if: ${{ inputs.enable_yq }}
+        if: ${{ inputs.enable_yq || inputs.enable_youpip }}
         run: |
           cd ${{ github.workspace }}/YTVideoOverlay
           make clean package DEBUG=0 FINALPACKAGE=1
